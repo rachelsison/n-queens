@@ -63,9 +63,41 @@ window.countNRooksSolutions = function(n) {
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
   var solution = undefined;
+  var board = new Board({'n':n});
+  var recurse = function(rowIndex) {
+    if (rowIndex === n) {
+      // console.log('solution');
+      // console.log(JSON.stringify(board.rows()));
+      return board.rows();
+    }
+
+    for (var i = 0; i < n; i++) {
+      board.togglePiece(rowIndex,i);
+      // console.log('toggle');
+      // console.log(JSON.stringify(board.rows()));
+      if (!board.hasAnyQueensConflicts()) {
+        // console.log('no conflict')
+        // console.log(JSON.stringify(board.rows()));
+        var result = recurse(rowIndex+1);
+        if (result) {
+          return result;
+        }
+      }
+      board.togglePiece(rowIndex,i);
+      // console.log('untoggle');
+      // console.log(JSON.stringify(board.rows()));
+    }
+  };
+  solution = recurse(0);
 
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
-  return solution;
+  if (solution) {
+    return solution;
+  }
+  else {
+    var returnBoard = new Board({'n':n});
+    return returnBoard.rows();
+  }
 };
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
@@ -73,24 +105,16 @@ window.countNQueensSolutions = function(n) {
   var board = new Board({'n':n});
   var recurse = function(rowIndex) {
     if (rowIndex === n) {
-      console.log('solution');
-      console.log(JSON.stringify(board.rows()));
       solutionCount++;
       return;
     }
 
     for (var i = 0; i < n; i++) {
       board.togglePiece(rowIndex,i);
-      console.log('toggle');
-      console.log(JSON.stringify(board.rows()));
       if (!board.hasAnyQueensConflicts()) {
-        console.log('no conflict')
-        console.log(JSON.stringify(board.rows()));
         recurse(rowIndex+1);
       }
       board.togglePiece(rowIndex,i);
-      console.log('untoggle');
-      console.log(JSON.stringify(board.rows()));
     }
   };
   recurse(0);

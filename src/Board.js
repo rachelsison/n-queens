@@ -144,7 +144,7 @@
         var col1 = 0;
         var count1 = 0;
         var row1 = Math.abs(majorDiagonalColumnIndexAtFirstRow);
-        while(row1 < this.get('n')-1) {
+        while(row1 <= this.get('n')-1) {
           if (this.get(row1)[col1] === 1) {
             count1++;
           }
@@ -160,7 +160,7 @@
         var row = 0;
         var count = 0;
         var col = Math.abs(majorDiagonalColumnIndexAtFirstRow);
-        while(col < this.get('n')-1) {
+        while(col <= this.get('n')-1) {
           if (this.get(row)[col] === 1) {
             count++;
           }
